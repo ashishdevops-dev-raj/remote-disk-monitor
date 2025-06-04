@@ -2,17 +2,16 @@ import os
 import sys
 from twilio.rest import Client
 
-# Load from environment or secrets
-ACCOUNT_SID = os.environ["TWILIO_SID"]
-AUTH_TOKEN = os.environ["TWILIO_TOKEN"]
-FROM = os.environ["TWILIO_FROM"]
-TO = os.environ["ALERT_PHONE"]
+ACCOUNT_SID = os.environ.get("TWILIO_SID")
+AUTH_TOKEN = os.environ.get("TWILIO_TOKEN")
+FROM = os.environ.get("TWILIO_FROM")
+TO = os.environ.get("ALERT_PHONE")
 
-client = Client(ACCOUNT_SID, AUTH_TOKEN)
-message = sys.argv[1]
+message = sys.argv[1] if len(sys.argv) > 1 else "No message provided"
 
-client.messages.create(
-    body=message,
-    from_=FROM,
-    to=TO
-)
+try:
+    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+    client.messages.create(body=message, from_=FROM, to=TO)
+    print(f"Sent SMS to {TO}: {message}")
+except Exception as e:
+    print(f"Failed to send SMS: {e}")
