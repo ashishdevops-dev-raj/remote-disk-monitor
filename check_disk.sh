@@ -1,6 +1,6 @@
 #!/bin/bash
 
-THRESHOLD=60
+THRESHOLD=10
 USER="your_ssh_user"
 REPORT="disk_report_$(date +%F).txt"
 
